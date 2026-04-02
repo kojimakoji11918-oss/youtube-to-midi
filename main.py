@@ -1,11 +1,11 @@
-import subprocess
+main_py = '''import subprocess
 import sys
 import yt_dlp
 from pathlib import Path
 from basic_pitch.inference import predict_and_save
+from basic_pitch import ICASSP_2022_MODEL_PATH
 
 def download_audio(url: str) -> str:
-    """YouTubeから音声をWAVでダウンロード"""
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': 'audio.%(ext)s',
@@ -20,7 +20,6 @@ def download_audio(url: str) -> str:
     return "audio.wav"
 
 def separate_vocals(input_wav: str) -> str:
-    """demucsでボーカル（主旋律）を分離"""
     subprocess.run([
         sys.executable, "-m", "demucs",
         "--two-stems=vocals",
@@ -31,7 +30,6 @@ def separate_vocals(input_wav: str) -> str:
     return vocals_path
 
 def convert_to_midi(vocals_wav: str, output_dir: str = "./output") -> None:
-    """basic-pitchでMIDIに変換"""
     Path(output_dir).mkdir(exist_ok=True)
     predict_and_save(
         [vocals_wav],
@@ -40,13 +38,19 @@ def convert_to_midi(vocals_wav: str, output_dir: str = "./output") -> None:
         sonify_midi=False,
         save_model_outputs=False,
         save_notes=False,
+        model_or_model_path=ICASSP_2022_MODEL_PATH,  
     )
     print(f"✅ MIDI変換完了: {output_dir} に保存されました")
 
 if __name__ == "__main__":
-    # ★ここにYouTubeのURLを入力★
+    #ここにURLを入力してください。
     YOUTUBE_URL = "https://youtu.be/T5846kV8Oy4?si=I_3fq19qCH7M-4Kz"
-
     wav_file = download_audio(YOUTUBE_URL)
     vocals   = separate_vocals(wav_file)
     convert_to_midi(vocals)
+'''
+
+with open("main.py", "w") as f:
+    f.write(main_py)
+
+print("✅ main.py を更新しました")
