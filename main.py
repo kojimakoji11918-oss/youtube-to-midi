@@ -45,7 +45,7 @@ def convert_to_midi(vocals_wav: str, output_dir: str = "./output") -> None:
 
 if __name__ == "__main__":
     # ★ここにYouTubeのURLを入力★
-    YOUTUBE_URL = "https://www.youtube.com/watch?v=XXXXXXX"
+    YOUTUBE_URL = "https://www.youtube.com/watch?v=T5846kV8Oy4&list=RDT5846kV8Oy4&start_radio=1"
 
     wav_file = download_audio(YOUTUBE_URL)
     vocals   = separate_vocals(wav_file)
